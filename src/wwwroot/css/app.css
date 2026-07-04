@@ -228,6 +228,16 @@ html, body {
     font-size: 1.05rem;
 }
 
+.home-link {
+    color: var(--blood);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.home-link:hover {
+    color: var(--ink);
+}
+
 .sheet-page {
     min-height: 100vh;
     display: flex;
