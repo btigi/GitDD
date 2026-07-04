@@ -1,0 +1,132 @@
+﻿@page "/"
+
+<PageTitle>GitDD</PageTitle>
+
+<div class="home-page parchment-surface">
+    <div class="home-content">
+        <header class="home-header">
+            <p class="sheet-label">Adventurer Registry</p>
+            <h1>GitDD</h1>
+            <p class="home-tagline">Your GitHub profile, presented as a D&amp;D character sheet.</p>
+        </header>
+
+        <section class="info-section">
+            <h2>How to use</h2>
+            <p>
+                Append a GitHub username to the URL — for example,
+                <code>example.com/octocat</code> — and the app fetches public profile data,
+                rolls six ability scores, and renders an adventurer record.
+            </p>
+        </section>
+
+        <section class="info-section">
+            <h2>Ability scores</h2>
+            <p>
+                Each score is derived from information in your Github profile.
+            </p>
+
+            <table class="calc-table">
+                <thead>
+                    <tr>
+                        <th>Stat</th>
+                        <th>Ability</th>
+                        <th>Adventured from</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>STR</td>
+                        <td>Strength</td>
+                        <td>Total stars earned across owned (non-fork) repos</td>
+                    </tr>
+                    <tr>
+                        <td>DEX</td>
+                        <td>Dexterity</td>
+                        <td>Commits and pushes from public events in the last 90 days</td>
+                    </tr>
+                    <tr>
+                        <td>CON</td>
+                        <td>Constitution</td>
+                        <td>Account age (years × 2) plus public repo count</td>
+                    </tr>
+                    <tr>
+                        <td>INT</td>
+                        <td>Intelligence</td>
+                        <td>Number of distinct languages used across repos</td>
+                    </tr>
+                    <tr>
+                        <td>WIS</td>
+                        <td>Wisdom</td>
+                        <td>Pull requests, reviews, and half of issue events (last 90 days)</td>
+                    </tr>
+                    <tr>
+                        <td>CHA</td>
+                        <td>Charisma</td>
+                        <td>Follower count</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="info-section">
+            <h2>Adventurer details</h2>
+            <table class="calc-table">
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th>Adventured from</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Public Gists</td>
+                        <td>Public gist count on the user profile</td>
+                    </tr>
+                    <tr>
+                        <td>Allies</td>
+                        <td>Following count — fellow adventurers tracked</td>
+                    </tr>
+                    <tr>
+                        <td>Languages Spoken</td>
+                        <td>Distinct programming languages across owned repos</td>
+                    </tr>
+                    <tr>
+                        <td>Signature Weapon</td>
+                        <td>Top owned repo by star count</td>
+                    </tr>
+                    <tr>
+                        <td>Disciples</td>
+                        <td>Total forks across owned repos</td>
+                    </tr>
+                    <tr>
+                        <td>Proficiencies</td>
+                        <td>Distinct topics tagged on owned repos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="info-section">
+            <h2>Class, level &amp; alignment</h2>
+            <ul class="info-list">
+                <li>
+                    <strong>Class</strong> — determined by the highest ability score.
+                    STR Barbarian, DEX Rogue, CON Paladin, INT Wizard, WIS Cleric, CHA Bard.
+                </li>
+                <li>
+                    <strong>Level</strong> — overall activity across all signals.
+                </li>
+                <li>
+                    <strong>Alignment</strong> - inferred from stat spread.
+                </li>
+            </ul>
+        </section>
+
+        <section class="info-section info-footnote">
+            <h2>Data source</h2>
+            <p>
+                Stats are read from the unauthenticated GitHub REST API (user profile, repos, and recent public events). Private activity is invisible, and unauthenticated requests are limited to 60 per hour per IP.
+            </p>
+        </section>
+    </div>
+</div>

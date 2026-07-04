@@ -1,0 +1,105 @@
+@page "/{Username}"
+@inject GitHubService GitHubService
+@inject CharacterBuilder CharacterBuilder
+@inject NavigationManager NavigationManager
+
+<PageTitle>@PageTitleText</PageTitle>
+
+<div class="sheet-page">
+    @switch (_state)
+    {
+        case LoadState.Loading:
+            <div class="message-card loading-card" aria-live="polite">
+                <p class="message-kicker">Adventuring in the realm</p>
+                <p>Reading the chronicles of <strong>@Username</strong>...</p>
+            </div>
+            break;
+
+        case LoadState.NotFound:
+            <div class="message-card" role="alert">
+                <p class="message-kicker">No record found</p>
+                <p>This adventurer could not be found in the GitHub archives.</p>
+            </div>
+            break;
+
+        case LoadState.RateLimited:
+            <div class="message-card" role="alert">
+                <p class="message-kicker">The tavern is crowded</p>
+                <p>GitHub rate limit hit — try again shortly.</p>
+            </div>
+            break;
+
+        case LoadState.Error:
+            <div class="message-card" role="alert">
+                <p class="message-kicker">Rocks fall, everyone dies.</p>
+                <p>@_errorMessage</p>
+            </div>
+            break;
+
+        case LoadState.Ready when _character is not null:
+            <CharacterCard Character="_character" RefreshHref="@RefreshHref" />
+            break;
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Username { get; set; } = string.Empty;
+
+    [SupplyParameterFromQuery(Name = "refresh")]
+    public bool Refresh { get; set; }
+
+    private enum LoadState
+    {
+        Loading,
+        Ready,
+        NotFound,
+        RateLimited,
+        Error
+    }
+
+    private LoadState _state = LoadState.Loading;
+    private DndCharacter? _character;
+    private string? _errorMessage;
+    private string PageTitleText => _character is null ? "GitDD" : $"{_character.DisplayName} · GitDD";
+    private string RefreshHref => $"/{Uri.EscapeDataString(Username.Trim())}?refresh=1";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Username))
+        {
+            _state = LoadState.NotFound;
+            _character = null;
+            return;
+        }
+
+        _state = LoadState.Loading;
+        _character = null;
+        _errorMessage = null;
+
+        var result = await GitHubService.FetchProfileAsync(Username.Trim(), Refresh);
+
+        switch (result.Status)
+        {
+            case GitHubFetchStatus.Success when result.Data is not null:
+                _character = CharacterBuilder.Build(result.Data);
+                _state = LoadState.Ready;
+                break;
+            case GitHubFetchStatus.NotFound:
+                _state = LoadState.NotFound;
+                break;
+            case GitHubFetchStatus.RateLimited:
+                _state = LoadState.RateLimited;
+                break;
+            default:
+                _state = LoadState.Error;
+                _errorMessage = result.ErrorMessage ?? "Something went wrong while fetching this profile.";
+                break;
+        }
+
+        if (Refresh && _state is LoadState.Ready)
+        {
+            NavigationManager.NavigateTo($"/{Username.Trim()}", replace: true);
+        }
+    }
+}

@@ -1,0 +1,509 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+    --ink: #2b1810;
+    --ink-soft: #4a2f22;
+    --blood: #6b1f1f;
+    --gold: #8a6b2d;
+    --parchment: #f3e6c8;
+    --parchment-deep: #e6d3aa;
+    --shadow: rgba(35, 20, 12, 0.28);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+    background:
+        radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.08), transparent 35%),
+        radial-gradient(circle at 80% 0%, rgba(107, 31, 31, 0.12), transparent 30%),
+        linear-gradient(180deg, #1f1510 0%, #120c09 100%);
+    color: var(--ink);
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+}
+
+.parchment-surface,
+.character-card,
+.message-card {
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 40%),
+        repeating-linear-gradient(
+            0deg,
+            rgba(120, 88, 48, 0.03) 0,
+            rgba(120, 88, 48, 0.03) 2px,
+            transparent 2px,
+            transparent 4px
+        ),
+        linear-gradient(180deg, var(--parchment) 0%, var(--parchment-deep) 100%);
+}
+
+.character-card,
+.message-card {
+    width: min(920px, 100%);
+    padding: 2rem;
+    border: 2px solid rgba(74, 47, 34, 0.45);
+    border-radius: 4px;
+    box-shadow:
+        0 18px 40px var(--shadow),
+        inset 0 0 80px rgba(139, 101, 58, 0.18);
+    position: relative;
+}
+
+.home-page {
+    min-height: 100vh;
+    padding: 2.5rem 1.25rem 3rem;
+}
+
+.home-content {
+    width: min(760px, 100%);
+    margin: 0 auto;
+}
+
+.home-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(74, 47, 34, 0.25);
+}
+
+.home-header h1 {
+    margin: 0.25rem 0 0;
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-size: clamp(2.4rem, 6vw, 3.4rem);
+    letter-spacing: 0.06em;
+    color: var(--blood);
+}
+
+.home-tagline {
+    margin: 0.75rem 0 0;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+}
+
+.info-section {
+    margin-bottom: 1.75rem;
+}
+
+.info-section h2 {
+    margin: 0 0 0.65rem;
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    text-transform: uppercase;
+}
+
+.info-section p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--ink);
+}
+
+.info-section code {
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.35);
+    font-size: 0.95em;
+    color: var(--blood);
+}
+
+.calc-table {
+    width: 100%;
+    margin-top: 1rem;
+    border-collapse: collapse;
+    font-size: 1rem;
+}
+
+.calc-table th,
+.calc-table td {
+    padding: 0.65rem 0.75rem;
+    text-align: left;
+    border: 1px solid rgba(74, 47, 34, 0.25);
+    vertical-align: top;
+}
+
+.calc-table th {
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.calc-table td:first-child {
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-weight: 600;
+    color: var(--blood);
+    white-space: nowrap;
+}
+
+.info-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: var(--ink);
+}
+
+.info-list li + li {
+    margin-top: 0.65rem;
+}
+
+.info-footnote p {
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+}
+
+.sheet-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.25rem;
+}
+
+.character-card::before,
+.message-card::before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px solid rgba(138, 107, 45, 0.35);
+    pointer-events: none;
+}
+
+.character-header {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 1.75rem;
+}
+
+.portrait-frame {
+    width: 140px;
+    height: 140px;
+    padding: 0.35rem;
+    border: 3px double var(--gold);
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow: inset 0 0 0 1px rgba(43, 24, 16, 0.25);
+}
+
+.portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(0.25) contrast(1.05);
+}
+
+.identity h1 {
+    margin: 0.2rem 0 0;
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: 0.04em;
+    color: var(--blood);
+}
+
+.sheet-label,
+.banner-label,
+.message-kicker {
+    margin: 0;
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.handle {
+    margin: 0.35rem 0 0;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+}
+
+.bio {
+    margin: 0.85rem 0 0;
+    max-width: 52ch;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+}
+
+.class-banner {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    padding: 1rem 0 1.5rem;
+    border-top: 1px solid rgba(74, 47, 34, 0.25);
+    border-bottom: 1px solid rgba(74, 47, 34, 0.25);
+}
+
+.class-banner strong {
+    display: block;
+    margin-top: 0.35rem;
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-size: 1.25rem;
+    color: var(--ink);
+}
+
+.ability-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+}
+
+.ability-box {
+    display: grid;
+    justify-items: center;
+    gap: 0.2rem;
+    padding: 0.85rem 0.5rem;
+    border: 2px solid rgba(74, 47, 34, 0.35);
+    background: rgba(255, 255, 255, 0.28);
+}
+
+.ability-name {
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+}
+
+.ability-score {
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--blood);
+}
+
+.ability-mod {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+}
+
+.lore-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0 0 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(74, 47, 34, 0.25);
+}
+
+.lore-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+    padding: 0.75rem;
+    border: 1px solid rgba(74, 47, 34, 0.25);
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.lore-stat .banner-label {
+    display: block;
+    width: 100%;
+}
+
+.lore-tip {
+    cursor: help;
+    text-decoration: underline dotted rgba(138, 107, 45, 0.45);
+    text-underline-offset: 0.2em;
+}
+
+.lore-stat-full {
+    grid-column: 1 / -1;
+}
+
+.lore-value {
+    display: block;
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-size: 1.35rem;
+    line-height: 1.2;
+    color: var(--ink);
+}
+
+.lore-empty {
+    margin: 0;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.lore-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+}
+
+.lore-pill {
+    display: inline-block;
+    padding: 0.28rem 0.75rem;
+    border-radius: 999px;
+    background: #e7f2fb;
+    border: 1px solid #b6cde0;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #245674;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+
+.lore-weapon {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.75rem;
+    margin: 0;
+    width: 100%;
+}
+
+.lore-weapon-name {
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.lore-weapon-stars {
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--gold);
+}
+
+.lore-more {
+    margin: 0;
+    font-size: 0.92rem;
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+.adventuring-report p {
+    margin: 0.45rem 0 0;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--ink);
+}
+
+.refresh-row {
+    margin: 1rem 0 0;
+    text-align: right;
+}
+
+.refresh-link {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    opacity: 0.7;
+}
+
+.refresh-link:hover {
+    opacity: 1;
+    color: var(--blood);
+}
+
+.message-card {
+    text-align: center;
+}
+
+.message-card p:last-child {
+    margin: 0.75rem 0 0;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+}
+
+.loading-card {
+    animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.88; }
+    50% { opacity: 1; }
+}
+
+#blazor-error-ui {
+    color-scheme: light only;
+    background: #6b1f1f;
+    color: #f3e6c8;
+    bottom: 0;
+    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.35);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid #e50000;
+}
+
+.validation-message {
+    color: #e50000;
+}
+
+@media (max-width: 760px) {
+    .character-header {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+    }
+
+    .class-banner {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .ability-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .lore-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .calc-table {
+        font-size: 0.92rem;
+    }
+
+    .calc-table th,
+    .calc-table td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .character-card,
+    .message-card {
+        padding: 1.25rem;
+    }
+
+    .ability-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

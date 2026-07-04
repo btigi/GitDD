@@ -1,0 +1,124 @@
+@using GitDD.Models
+
+<article class="character-card">
+    <header class="character-header">
+        <div class="portrait-frame">
+            <img src="@Character.AvatarUrl" alt="@Character.DisplayName portrait" class="portrait" />
+        </div>
+        <div class="identity">
+            <p class="sheet-label">Adventurer Record</p>
+            <h1>@Character.DisplayName</h1>
+            <p class="handle">@Character.Username</p>
+            @if (!string.IsNullOrWhiteSpace(Character.Bio))
+            {
+                <p class="bio">@Character.Bio</p>
+            }
+        </div>
+    </header>
+
+    <section class="class-banner">
+        <div>
+            <span class="banner-label">Class</span>
+            <strong>@Character.Class</strong>
+        </div>
+        <div>
+            <span class="banner-label">Level</span>
+            <strong>@Character.Level</strong>
+        </div>
+        <div>
+            <span class="banner-label">Alignment</span>
+            <strong>@Character.Alignment</strong>
+        </div>
+    </section>
+
+    <section class="ability-grid" aria-label="Ability scores">
+        @foreach (var ability in Character.AbilityScores.All)
+        {
+            <div class="ability-box">
+                <span class="ability-name">@ability.Abbreviation</span>
+                <span class="ability-score">@ability.Score.Score</span>
+                <span class="ability-mod">@ability.Score.ModifierLabel</span>
+            </div>
+        }
+    </section>
+
+    <section class="lore-stats" aria-label="Adventurer details">
+        <div class="lore-stat">
+            <span class="banner-label lore-tip" title="Public gists">Shared Scrolls</span>
+            <span class="lore-value">@Character.PublicGists</span>
+        </div>
+        <div class="lore-stat">
+            <span class="banner-label lore-tip" title="Following count">Allies</span>
+            <span class="lore-value">@Character.Allies</span>
+        </div>
+        <div class="lore-stat">
+            <span class="banner-label lore-tip" title="Fork count">Disciples</span>
+            <span class="lore-value">@Character.Disciples</span>
+        </div>
+        <div class="lore-stat lore-stat-full">
+            <span class="banner-label">Languages Spoken</span>
+            @if (Character.LanguagesSpoken.Count == 0)
+            {
+                <p class="lore-empty">None recorded</p>
+            }
+            else
+            {
+                <ul class="lore-pills" aria-label="Languages spoken">
+                    @foreach (var language in Character.LanguagesSpoken)
+                    {
+                        <li class="lore-pill">@language</li>
+                    }
+                </ul>
+            }
+        </div>
+        <div class="lore-stat lore-stat-full">
+            <span class="banner-label">Signature Weapon</span>
+            <p class="lore-weapon">
+                <span class="lore-weapon-name">@Character.SignatureWeaponName</span>
+                @if (Character.SignatureWeaponStars > 0)
+                {
+                    <span class="lore-weapon-stars">@Character.SignatureWeaponStars ★</span>
+                }
+            </p>
+        </div>
+        <div class="lore-stat lore-stat-full">
+            <span class="banner-label">Proficiencies</span>
+            @if (Character.Proficiencies.Count == 0)
+            {
+                <p class="lore-empty">None recorded</p>
+            }
+            else
+            {
+                <ul class="lore-pills" aria-label="Proficiencies">
+                    @foreach (var proficiency in Character.Proficiencies)
+                    {
+                        <li class="lore-pill">@proficiency</li>
+                    }
+                </ul>
+                @if (Character.HiddenProficiencyCount > 0)
+                {
+                    <p class="lore-more">+ @Character.HiddenProficiencyCount more</p>
+                }
+            }
+        </div>
+    </section>
+
+    <footer class="adventuring-report">
+        <span class="banner-label">Adventuring Report</span>
+        <p>@Character.AdventuringReport</p>
+        @if (!string.IsNullOrWhiteSpace(RefreshHref))
+        {
+            <p class="refresh-row">
+                <a href="@RefreshHref" class="refresh-link">Refresh from GitHub</a>
+            </p>
+        }
+    </footer>
+</article>
+
+@code {
+    [Parameter, EditorRequired]
+    public DndCharacter Character { get; set; } = default!;
+
+    [Parameter]
+    public string? RefreshHref { get; set; }
+}
