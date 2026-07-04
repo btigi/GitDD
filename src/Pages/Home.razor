@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject NavigationManager NavigationManager
 
 <PageTitle>GitDD</PageTitle>
 
@@ -17,6 +18,21 @@
                 <code>example.com/octocat</code> — and the app fetches public profile data,
                 rolls six ability scores, and renders an adventurer record.
             </p>
+
+            <form class="username-form" @onsubmit="ViewProfile" @onsubmit:preventDefault>
+                <label class="username-label" for="github-username">GitHub username</label>
+                <div class="username-row">
+                    <input
+                        id="github-username"
+                        class="username-input"
+                        value="@_username"
+                        @oninput="OnUsernameInput"
+                        placeholder="octocat"
+                        autocomplete="off"
+                        spellcheck="false" />
+                    <button type="submit" class="username-button" disabled="@string.IsNullOrWhiteSpace(_username)">View</button>
+                </div>
+            </form>
         </section>
 
         <section class="info-section">
@@ -130,3 +146,23 @@
         </section>
     </div>
 </div>
+
+@code {
+    private string _username = string.Empty;
+
+    private void OnUsernameInput(ChangeEventArgs e)
+    {
+        _username = e.Value?.ToString() ?? string.Empty;
+    }
+
+    private void ViewProfile()
+    {
+        var username = _username.Trim();
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            return;
+        }
+
+        NavigationManager.NavigateTo($"/{Uri.EscapeDataString(username)}");
+    }
+}

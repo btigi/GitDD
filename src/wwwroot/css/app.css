@@ -111,6 +111,75 @@ html, body {
     color: var(--blood);
 }
 
+.username-form {
+    margin-top: 1.25rem;
+    padding: 1rem;
+    border: 1px solid rgba(74, 47, 34, 0.25);
+    background: rgba(255, 255, 255, 0.28);
+}
+
+.username-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.username-row {
+    display: flex;
+    gap: 0.65rem;
+    align-items: stretch;
+}
+
+.username-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid rgba(74, 47, 34, 0.35);
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.72);
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+}
+
+.username-input::placeholder {
+    color: rgba(74, 47, 34, 0.45);
+}
+
+.username-input:focus {
+    outline: 2px solid rgba(138, 107, 45, 0.45);
+    outline-offset: 1px;
+}
+
+.username-button {
+    padding: 0.6rem 1.25rem;
+    border: 1px solid var(--blood);
+    border-radius: 2px;
+    background: var(--blood);
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-size: 1.01rem;
+    color: var(--parchment);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+.username-button:hover:not(:disabled) {
+    background: #541717;
+    border-color: #541717;
+}
+
+.username-button:disabled {
+    background: rgba(74, 47, 34, 0.1);
+    border-color: rgba(74, 47, 34, 0.22);
+    color: rgba(74, 47, 34, 0.4);
+    cursor: not-allowed;
+}
+
 .calc-table {
     width: 100%;
     margin-top: 1rem;
@@ -494,6 +563,14 @@ html, body {
     .calc-table th,
     .calc-table td {
         padding: 0.5rem;
+    }
+
+    .username-row {
+        flex-direction: column;
+    }
+
+    .username-button {
+        width: 100%;
     }
 }
 
