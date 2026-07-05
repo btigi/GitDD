@@ -2,6 +2,8 @@
 
 GitDD is a client-side Blazor WebAssembly app inspired by [gitfut](https://github.com/younesfdj/gitfut). Visit `/{username}` and your public GitHub profile is distilled into a basic D&D 'character sheet', six ability scores, class, level, alignment, and more.
 
+![screenshot showing output](resources/screenshot.png)
+
 ## Notes
 
 Info is read from github using an unauthenticated REST API, so the app is limited to 60 requests/hour per IP.
