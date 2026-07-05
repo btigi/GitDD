@@ -1,6 +1,19 @@
 @using GitDD.Models
 
 <article class="character-card">
+    <button
+        type="button"
+        class="help-toggle @(_showHelp ? "help-toggle-active" : null)"
+        aria-label="Toggle stat explanations"
+        aria-pressed="@_showHelp"
+        title="@(_showHelp ? "Hide stat explanations" : "Show how stats were calculated")"
+        @onclick="ToggleHelp">
+        <svg class="help-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 2l7 3v6c0 5-3.5 9-7 11-3.5-2-7-6-7-11V5l7-3z" />
+            <text x="12" y="15.5" text-anchor="middle">?</text>
+        </svg>
+    </button>
+
     <header class="character-header">
         <div class="portrait-frame">
             <img src="@Character.AvatarUrl" alt="@Character.DisplayName portrait" class="portrait" />
@@ -17,102 +30,124 @@
     </header>
 
     <section class="class-banner">
-        <div>
-            <span class="banner-label">Class</span>
-            <strong>@Character.Class</strong>
-        </div>
-        <div>
-            <span class="banner-label">Level</span>
-            <strong>@Character.Level</strong>
-        </div>
-        <div>
-            <span class="banner-label">Alignment</span>
-            <strong>@Character.Alignment</strong>
-        </div>
+        <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.ClassHelp">
+            <div>
+                <span class="banner-label">Class</span>
+                <strong>@Character.Class</strong>
+            </div>
+        </StatHelp>
+        <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.LevelHelp">
+            <div>
+                <span class="banner-label">Level</span>
+                <strong>@Character.Level</strong>
+            </div>
+        </StatHelp>
+        <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.AlignmentHelp">
+            <div>
+                <span class="banner-label">Alignment</span>
+                <strong>@Character.Alignment</strong>
+            </div>
+        </StatHelp>
     </section>
 
     <section class="ability-grid" aria-label="Ability scores">
         @foreach (var ability in Character.AbilityScores.All)
         {
-            <div class="ability-box">
-                <span class="ability-name">@ability.Abbreviation</span>
-                <span class="ability-score">@ability.Score.Score</span>
-                <span class="ability-mod">@ability.Score.ModifierLabel</span>
-            </div>
+            <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.GetAbilityHelp(ability.Abbreviation)">
+                <div class="ability-box">
+                    <span class="ability-name">@ability.Abbreviation</span>
+                    <span class="ability-score">@ability.Score.Score</span>
+                    <span class="ability-mod">@ability.Score.ModifierLabel</span>
+                </div>
+            </StatHelp>
         }
     </section>
 
     <section class="lore-stats" aria-label="Adventurer details">
-        <div class="lore-stat">
-            <span class="banner-label lore-tip" title="Public gists">Shared Scrolls</span>
-            <span class="lore-value">@Character.PublicGists</span>
-        </div>
-        <div class="lore-stat">
-            <span class="banner-label lore-tip" title="Following count">Allies</span>
-            <span class="lore-value">@Character.Allies</span>
-        </div>
-        <div class="lore-stat">
-            <span class="banner-label lore-tip" title="Fork count">Disciples</span>
-            <span class="lore-value">@Character.Disciples</span>
-        </div>
-        <div class="lore-stat lore-stat-full">
-            <span class="banner-label">Languages Spoken</span>
-            @if (Character.LanguagesSpoken.Count == 0)
-            {
-                <p class="lore-empty">None recorded</p>
-            }
-            else
-            {
-                <ul class="lore-pills" aria-label="Languages spoken">
-                    @foreach (var language in Character.LanguagesSpoken)
-                    {
-                        <li class="lore-pill">@language</li>
-                    }
-                </ul>
-            }
-        </div>
-        <div class="lore-stat lore-stat-full">
-            <span class="banner-label">Signature Weapon</span>
-            <p class="lore-weapon">
-                <span class="lore-weapon-name">@Character.SignatureWeaponName</span>
-                @if (Character.SignatureWeaponStars > 0)
+        <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.PublicGistsHelp">
+            <div class="lore-stat">
+                <span class="banner-label">Shared Scrolls</span>
+                <span class="lore-value">@Character.PublicGists</span>
+            </div>
+        </StatHelp>
+        <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.AlliesHelp">
+            <div class="lore-stat">
+                <span class="banner-label">Allies</span>
+                <span class="lore-value">@Character.Allies</span>
+            </div>
+        </StatHelp>
+        <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.DisciplesHelp">
+            <div class="lore-stat">
+                <span class="banner-label">Disciples</span>
+                <span class="lore-value">@Character.Disciples</span>
+            </div>
+        </StatHelp>
+        <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.LanguagesSpokenHelp">
+            <div class="lore-stat lore-stat-full">
+                <span class="banner-label">Languages Spoken</span>
+                @if (Character.LanguagesSpoken.Count == 0)
                 {
-                    <span class="lore-weapon-stars">@Character.SignatureWeaponStars ★</span>
+                    <p class="lore-empty">None recorded</p>
                 }
-            </p>
-        </div>
-        <div class="lore-stat lore-stat-full">
-            <span class="banner-label">Proficiencies</span>
-            @if (Character.Proficiencies.Count == 0)
-            {
-                <p class="lore-empty">None recorded</p>
-            }
-            else
-            {
-                <ul class="lore-pills" aria-label="Proficiencies">
-                    @foreach (var proficiency in Character.Proficiencies)
-                    {
-                        <li class="lore-pill">@proficiency</li>
-                    }
-                </ul>
-                @if (Character.HiddenProficiencyCount > 0)
+                else
                 {
-                    <p class="lore-more">+ @Character.HiddenProficiencyCount more</p>
+                    <ul class="lore-pills" aria-label="Languages spoken">
+                        @foreach (var language in Character.LanguagesSpoken)
+                        {
+                            <li class="lore-pill">@language</li>
+                        }
+                    </ul>
                 }
-            }
-        </div>
+            </div>
+        </StatHelp>
+        <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.SignatureWeaponHelp">
+            <div class="lore-stat lore-stat-full">
+                <span class="banner-label">Signature Weapon</span>
+                <p class="lore-weapon">
+                    <span class="lore-weapon-name">@Character.SignatureWeaponName</span>
+                    @if (Character.SignatureWeaponStars > 0)
+                    {
+                        <span class="lore-weapon-stars">@Character.SignatureWeaponStars ★</span>
+                    }
+                </p>
+            </div>
+        </StatHelp>
+        <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.ProficienciesHelp">
+            <div class="lore-stat lore-stat-full">
+                <span class="banner-label">Proficiencies</span>
+                @if (Character.Proficiencies.Count == 0)
+                {
+                    <p class="lore-empty">None recorded</p>
+                }
+                else
+                {
+                    <ul class="lore-pills" aria-label="Proficiencies">
+                        @foreach (var proficiency in Character.Proficiencies)
+                        {
+                            <li class="lore-pill">@proficiency</li>
+                        }
+                    </ul>
+                    @if (Character.HiddenProficiencyCount > 0)
+                    {
+                        <p class="lore-more">+ @Character.HiddenProficiencyCount more</p>
+                    }
+                }
+            </div>
+        </StatHelp>
     </section>
 
-    <footer class="adventuring-report">
-        <span class="banner-label">Adventuring Report</span>
-        <p>@Character.AdventuringReport</p>
-        @if (!string.IsNullOrWhiteSpace(RefreshHref))
-        {
-            <p class="refresh-row">
-                <a href="@RefreshHref" class="refresh-link">Refresh from GitHub</a>
-            </p>
-        }
-    </footer>
+    <StatHelp ShowHelp="_showHelp" HelpText="@Character.Help.AdventuringReportHelp">
+        <footer class="adventuring-report">
+            <span class="banner-label">Adventuring Report</span>
+            <p>@Character.AdventuringReport</p>
+            @if (!string.IsNullOrWhiteSpace(RefreshHref))
+            {
+                <p class="refresh-row">
+                    <a href="@RefreshHref" class="refresh-link">Refresh from GitHub</a>
+                </p>
+            }
+        </footer>
+    </StatHelp>
 </article>
 
 @code {
@@ -121,4 +156,8 @@
 
     [Parameter]
     public string? RefreshHref { get; set; }
+
+    private bool _showHelp;
+
+    private void ToggleHelp() => _showHelp = !_showHelp;
 }

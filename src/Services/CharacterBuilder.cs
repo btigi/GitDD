@@ -98,6 +98,37 @@ public sealed class CharacterBuilder
         var level = CalculateLevel(totalStars, recentCommits, user.PublicRepos, distinctLanguages, wisdomValue, user.Followers);
         var alignment = DetermineAlignment(scores);
         var adventuringReport = BuildAdventuringReport(className, level, dominantStat, scores);
+        var activity = totalStars + recentCommits + user.PublicRepos + distinctLanguages + wisdomValue + user.Followers;
+        var help = BuildHelpInfo(
+            totalStars,
+            recentCommits,
+            accountYears,
+            user.PublicRepos,
+            constitutionValue,
+            distinctLanguages,
+            pullRequests,
+            reviews,
+            issues,
+            wisdomValue,
+            user.Followers,
+            user.PublicGists,
+            user.Following,
+            totalForks,
+            languages.Count,
+            proficiencies.Count,
+            signatureRepo,
+            strength,
+            dexterity,
+            constitution,
+            intelligence,
+            wisdom,
+            charisma,
+            dominantStat,
+            className,
+            level,
+            alignment,
+            scores,
+            activity);
 
         return new DndCharacter
         {
@@ -125,12 +156,62 @@ public sealed class CharacterBuilder
             SignatureWeaponStars = signatureRepo?.StargazersCount ?? 0,
             Disciples = totalForks,
             Proficiencies = proficiencies.Take(MaxDisplayedProficiencies).ToList(),
-            HiddenProficiencyCount = Math.Max(0, proficiencies.Count - MaxDisplayedProficiencies)
+            HiddenProficiencyCount = Math.Max(0, proficiencies.Count - MaxDisplayedProficiencies),
+            Help = help
         };
     }
 
-    private static string FormatTopicLabel(string topic) =>
-        topic.Replace('-', ' ');
+    private static CharacterHelpInfo BuildHelpInfo(
+        int totalStars,
+        int recentCommits,
+        double accountYears,
+        int publicRepos,
+        double constitutionValue,
+        int distinctLanguages,
+        int pullRequests,
+        int reviews,
+        int issues,
+        double wisdomValue,
+        int followers,
+        int publicGists,
+        int following,
+        int totalForks,
+        int languageCount,
+        int proficiencyCount,
+        GitHubRepo? signatureRepo,
+        int strength,
+        int dexterity,
+        int constitution,
+        int intelligence,
+        int wisdom,
+        int charisma,
+        string dominantStat,
+        string className,
+        int level,
+        string alignment,
+        IReadOnlyDictionary<string, int> scores,
+        double activity) =>
+        new()
+        {
+            StrengthHelp = $"Based on {totalStars} total stars on owned (non-fork) repos.",
+            DexterityHelp = $"Based on {recentCommits} commits/pushes from public events in the last 90 days.",
+            ConstitutionHelp = $"Based on account age ({accountYears:F1} years) and public repos ({publicRepos}).",
+            IntelligenceHelp = $"Based on {distinctLanguages} distinct languages across owned repos.",
+            WisdomHelp = $"Based on {pullRequests} pull requests, {reviews} reviews, and {issues} issue events in the last 90 days (issues count at half weight → {wisdomValue:F0}).",
+            CharismaHelp = $"Based on {followers} followers.",
+            ClassHelp = $"Highest ability score is {dominantStat} ({scores[dominantStat]}). That maps to {className}. STR: Barbarian, DEX: Rogue, CON: Paladin, INT: Wizard, WIS: Cleric, CHA: Bard.",
+            LevelHelp = $"Overall activity ({activity:F0}).",
+            AlignmentHelp = $"Inferred from stat spread: average {scores.Values.Average():F1}, spread {scores.Values.Max() - scores.Values.Min()}. Result: {alignment}.",
+            PublicGistsHelp = $"Your public gist count from GitHub → {publicGists}.",
+            AlliesHelp = $"Your following count (accounts you follow) → {following}.",
+            DisciplesHelp = $"Total forks across owned repos → {totalForks}.",
+            LanguagesSpokenHelp = languageCount == 0 ? "No languages recorded on owned repos." : $"{languageCount} distinct languages across owned repos.",
+            SignatureWeaponHelp = signatureRepo is null ? "No owned repos found, so no signature weapon is recorded." : $"Top owned repo by stars: {signatureRepo.Name} - {signatureRepo.StargazersCount} stars.",
+            ProficienciesHelp = proficiencyCount == 0 ? "No topics tagged on owned repos." : $"{proficiencyCount} distinct repo topics.",
+            AdventuringReportHelp = $"Summary from level, class, dominant stat ({dominantStat}), and play-style flavor."
+        };
+
+    private static string FormatTopicLabel(string topic) => topic.Replace('-', ' ');
 
     private static int ToAbilityScore(double value, double scale)
     {

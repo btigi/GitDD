@@ -19,6 +19,7 @@ public sealed class DndCharacter
     public int Disciples { get; set; }
     public IReadOnlyList<string> Proficiencies { get; set; } = [];
     public int HiddenProficiencyCount { get; set; }
+    public CharacterHelpInfo Help { get; set; } = new();
 }
 
 public sealed class AbilityScores

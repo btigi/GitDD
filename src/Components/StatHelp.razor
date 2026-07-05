@@ -1,0 +1,19 @@
+<div class="stat-help @(ShowHelp ? "stat-help-active" : null)">
+    <div
+        class="stat-help-target"
+        data-help="@(ShowHelp ? HelpText : null)"
+        tabindex="@(ShowHelp ? 0 : -1)">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public bool ShowHelp { get; set; }
+
+    [Parameter]
+    public string? HelpText { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}
